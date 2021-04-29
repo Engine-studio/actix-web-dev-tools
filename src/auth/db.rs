@@ -38,15 +38,15 @@ impl Auth {
         auth_type: &str,
         roles: &Vec<String>,
         conn: &PgConnection,
-    ) -> Result<()>{
-        diesel::insert_into(auth::table)
+    ) -> Result<Auth>{
+        let r = diesel::insert_into(auth::table)
             .values(&(
                     auth::login.eq(login),
                     auth::auth_type.eq(auth_type),
                     auth::roles.eq(roles),
             ))
-            .execute(conn)?;
-        Ok(())
+            .get_result(conn)?;
+        Ok(r)
     }
 
     pub async fn delete(
