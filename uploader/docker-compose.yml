@@ -1,0 +1,32 @@
+version: '3'
+services:
+  uploader:
+    image: badconfig/tiny_uploader
+    container_name: uploader
+    tty: true
+    ports:
+      - "8090:8088"
+    environment:
+      - DATABASE_URL=postgres://main:NavwNgTnxyWsz7hy5yRmEKC4X@uploader_postgres:5432/diesel_db
+    networks:
+      - app-network
+  uploader_postgres:
+    image: "postgres:12.6"
+    container_name: uploader_postgres
+    restart: unless-stopped
+    ports:
+      - "7090:5432"
+    environment:
+      POSTGRES_DB: diesel_db
+      POSTGRES_PASSWORD: NavwNgTnxyWsz7hy5yRmEKC4X
+      POSTGRES_USER: main
+    networks:
+      - app-network
+    volumes:
+      - pg_uploader:/var/lib/postgresql/data
+volumes:
+  pg_uploader:
+networks:
+  app-network:
+    external: true
+
