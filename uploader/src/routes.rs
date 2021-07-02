@@ -65,9 +65,9 @@ pub async fn load(
         println!("TICK MAFAKA");
         if PendingFile::was_not_verifyed(&path_t, &thread_conn).await.expect("db err pending") {
             println!("in");
-            web::block(|| std::fs::remove_file(path_t))
-                .await
-                .expect("error removing file");
+            //web::block(|| std::fs::remove_file(path_t))
+            //    .await
+            //    .expect("error removing file");
         }
     });
     Ok(HttpResponse::Ok().json(

@@ -59,6 +59,16 @@ impl From<reqwest::Error> for ApiError {
     }
 }
 
+impl From<redis::RedisError> for ApiError {
+    fn from(err:  redis::RedisError) -> ApiError {
+        ApiError {
+            code: 500,
+            message: format!("{}",err),
+            error_type: ErrorType::DatabaseError,
+        }
+    }
+}
+
 impl std::fmt::Display for ApiError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", serde_json::to_string(self).unwrap())
